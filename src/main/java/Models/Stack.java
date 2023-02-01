@@ -1,12 +1,13 @@
 package Models;
 
-
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Stack {
     private Object[] Items;
+    // Pointer to the last element of the array
     private int length = - 1;
+    // Max size array
     private final int capacity;
 
     // Constructor
@@ -16,7 +17,9 @@ public class Stack {
         length = stack.length;
         capacity = stack.capacity;
     }
+
     public Stack(int size) {
+
         capacity = size;
         Items = new Object[capacity];
     }
@@ -27,6 +30,7 @@ public class Stack {
      * return none
      */
     public void Push(Object item) {
+
         if(!IsFull()) {
             Items[++length] = item;
         }
@@ -48,7 +52,6 @@ public class Stack {
         return topItem;
     }
 
-
     /*
      *  Checking the stack for empty
      *  Param - None;
@@ -59,8 +62,9 @@ public class Stack {
     }
 
     /*
-     *   Check
-     *
+     *   Checking the stack for fullness
+     *   Param - None
+     *   Return - if there is no empty space in the array then true will be returned
      **/
     public boolean IsFull(){
         return length == (capacity - 1);
@@ -71,9 +75,7 @@ public class Stack {
      *   Param - None
      *   Return - reversed array
      */
-    public Object[] GetStack() {
-        return Arrays.copyOf(Reverse(), Items.length);
-    }
+    public Object[] GetStack() { return Arrays.copyOf(Reverse(), capacity); }
 
     /*
      *   Reverse stack array
@@ -81,26 +83,41 @@ public class Stack {
      *   Return - None
      */
     public Object[] Reverse() {
-        return IntStream.range(0,Items.length)
-                .mapToObj(i -> Items[Items.length-i-1])
+
+        return IntStream.range(0, capacity)
+                .mapToObj(i -> Items[capacity - i - 1])
                 .toArray();
     }
 
-    public int GetSize() {
-        return new Integer(Items.length);
-    }
+    /*
+    *  Getting the length of an array
+    *  Param - None
+    *  Return - Length of array
+    * */
+    public int GetLength() { return new Integer(capacity); }
 
-    public Object Top() {
-        return Items[length];
-    }
+    /*
+     *  Getting the last element of an array
+     *  Param - None
+     *  Return - Last element of an array
+     * */
+    public Object Top() { return Items[length]; }
 
-    public Stack GetClone(){
-        return new Stack(this);
-    }
+    /*
+     *  Getting a new class instance based on the current class
+     *  Param - None
+     *  Return - new class instance
+     * */
+    public Stack GetClone(){ return new Stack(this); }
 
+    /*
+     *  Clearing the array and changing the position of the pointer
+     *  Param - None
+     *  Return - None
+     * */
     public void Clear() {
-        length = -1;
 
+        length = -1;
         Items = new Object[capacity];
 
     }
