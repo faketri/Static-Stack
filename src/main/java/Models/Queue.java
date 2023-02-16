@@ -1,6 +1,5 @@
 package Models;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 @SuppressWarnings("unchecked")
@@ -50,11 +49,11 @@ public class Queue<T>  {
         }
     }
 
-    public Object getLast(){
+    public T getLast(){
         return items[rear];
     }
 
-    public Object getFirst(){
+    public T getFirst(){
         return items[front] ;
     }
 
