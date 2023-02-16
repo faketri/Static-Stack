@@ -1,47 +1,53 @@
 package Models;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class Queue {
+@SuppressWarnings("unchecked")
+public class Queue<T>  {
 
-    private Object[] items;
-    private final int front = 0;
-    private int rear;
-    private int length = -1;
+    private final T[] items;
+    private int front = -1;
+    private int rear = -1;
+    private int length = 0;
     private final int capacity;
 
     public Queue(int capacity){
 
         this.capacity = capacity;
-        items = new Object[capacity];
+        this.items = (T[])new Object[capacity];
     }
 
-    public void append(Object element){
+    public void append(T element){
 
-        if( ! isFull() )
-            items[rear = ++length] = element;
+        if( isFull() )
+            throw new RuntimeException("Queue is full");
 
+        items[++rear % capacity] = element;
+        ++length;
     }
 
-    public Object remove(){
+    public T remove(){
 
-        Object removingItem = items[front];
+        if(isEmpty())
+            throw new RuntimeException("Queue is empty");
 
-        if( ! isEmpty() ) {
+        int index = ++front % capacity;
 
-
-            for (int i = 1; i < items.length; i++) {
-                items[i - 1] = items[i];
-            }
-            items[length] = null;
-            rear = length - 1;
-        }
+        T removingItem = items[index];
+        items[index] = null;
+        --length;
 
         return removingItem;
     }
 
-    public Object[] getQueue(){
-        return Arrays.copyOf(items, items.length);
+    public void reverse(){
+
+        for(int i = 0; i < capacity / 2; i++){
+            T temp = items[i];
+            items[i] = items[capacity - i - 1];
+            items[capacity - i - 1] = temp;
+        }
     }
 
     public Object getLast(){
@@ -52,12 +58,18 @@ public class Queue {
         return items[front] ;
     }
 
+    public int getLength(){ return capacity;}
+
     public boolean isFull(){
-        return length == (capacity - 1);
+        return length == capacity;
     }
 
     public boolean isEmpty(){
-        return length == -1;
+        return length == 0;
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(items);
+    }
 }
